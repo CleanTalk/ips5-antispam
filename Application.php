@@ -13,11 +13,11 @@ namespace IPS\antispambycleantalk;
 
 require_once(\IPS\Application::getRootPath().'/applications/antispambycleantalk/lib/autoload.php');
 
-use Cleantalk\ApbctIPS\Helper;
+use Cleantalk\Custom\Helper;
 use Cleantalk\Common\Antispam\Cleantalk;
 use Cleantalk\Common\Antispam\CleantalkRequest;
-use Cleantalk\ApbctIPS\Helper as CleantalkHelper;
-use Cleantalk\ApbctIPS\DB;
+use Cleantalk\Custom\Helper as CleantalkHelper;
+use Cleantalk\Custom\DB;
 use Cleantalk\Common\Firewall\Firewall;
 use IPS\Output;
 use IPS\Request;

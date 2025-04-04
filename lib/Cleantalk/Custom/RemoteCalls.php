@@ -1,8 +1,8 @@
 <?php
 
-namespace Cleantalk\ApbctIPS;
+namespace Cleantalk\Custom;
 
-class RemoteCalls extends \Cleantalk\Common\RemoteCalls {
+class RemoteCalls extends \Cleantalk\Common\RemoteCalls\RemoteCalls {
     /**
      * SFW update
      *

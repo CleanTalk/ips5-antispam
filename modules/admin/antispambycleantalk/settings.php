@@ -8,7 +8,7 @@ require_once(\IPS\Application::getRootPath().'/applications/antispambycleantalk/
 
 use Cleantalk\Common\Antispam\Cleantalk;
 use Cleantalk\Common\Antispam\CleantalkRequest;
-use Cleantalk\ApbctIPS\Helper as CleantalkHelper;
+use Cleantalk\Custom\Helper as CleantalkHelper;
 
 /* To prevent PHP errors (extending class does not exist) revealing path */
 

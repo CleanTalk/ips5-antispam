@@ -54,5 +54,9 @@
     {
         "key": "cleantalk_cron",
         "default": ""
+    },
+    {
+        "key": "cleantalk_cron_last_start",
+        "default": ""
     }
 ]
