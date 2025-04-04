@@ -161,6 +161,9 @@ class Application extends \IPS\Application
         $ct_request->agent = 'ips5-' . self::getAntispamModuleVersion();
         $ct_request->js_on = isset($_COOKIE['ct_checkjs']) && in_array($_COOKIE['ct_checkjs'], self::getCheckJSArray()) ? 1 : 0;
         $ct_request->submit_time = isset($_COOKIE['ct_ps_timestamp']) ? time() - (int)$_COOKIE['ct_ps_timestamp'] : 0;
+        if ( isset($_POST['ct_bot_detector_event_token']) ) {
+            $ct_request->event_token = $_POST['ct_bot_detector_event_token'];
+        }
         $result = $reg_flag ? $ct->isAllowUser($ct_request) : $ct->isAllowMessage($ct_request);
         if ( $ct->server_change ) {
             \IPS\Settings::i()->ct_work_url = $ct->work_url;
