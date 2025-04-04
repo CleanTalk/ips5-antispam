@@ -1,10 +1,13 @@
 {
     "core": {
         "AdminNotifications": {
-            "antispambycleantalk": "IPS\\antispambycleantalk\\extensions\\core\\AdminNotifications\\Notification"
+            "Notification": "IPS\\antispambycleantalk\\extensions\\core\\AdminNotifications\\Notification"
+        },
+        "Loader": {
+            "Loader": "IPS\\antispambycleantalk\\extensions\\core\\Loader\\Loader"
         },
         "Uninstall": {
-            "antispambycleantalk": "IPS\\antispambycleantalk\\extensions\\core\\Uninstall\\Antispambycleantalk"
+            "Antispambycleantalk": "IPS\\antispambycleantalk\\extensions\\core\\Uninstall\\Antispambycleantalk"
         }
     }
 }
