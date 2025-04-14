@@ -79,7 +79,7 @@ class settings extends \IPS\Dispatcher\Controller
                 \IPS\Settings::i()->ct_server_changed = time();
             }
 
-            if( $values['ct_cleantalk_sfw'] == 1 ){
+            if( isset($values['ct_cleantalk_sfw']) && $values['ct_cleantalk_sfw'] == 1 ){
                 Application::apbct_sfw_update( $values['ct_access_key']);
                 Application::apbct_sfw_send_logs( $values['ct_access_key']);
             }
