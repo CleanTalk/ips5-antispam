@@ -1,9 +1,11 @@
 <?php
 
-namespace Cleantalk\Custom;
+namespace Cleantalk\Custom\Db;
 use IPS\Db as IpsDB;
 
-class DB extends \Cleantalk\Common\Db\Db {
+class Db extends \Cleantalk\Common\Db\Db {
+    private $query;
+
     /**
      * Alternative constructor.
      * Initilize Database object and write it to property.
@@ -33,8 +35,8 @@ class DB extends \Cleantalk\Common\Db\Db {
      * @return bool|\mysqli_result|\mysqli_stmt|string
      */
     public function prepare( $query, $vars = array() ) {
-        $this->db_result = IpsDB::i()->preparedQuery($query, $vars);
-        return $this->db_result;
+        $this->result = IpsDB::i()->preparedQuery($query, $vars);
+        return $this->result;
     }
 
     /**
@@ -45,8 +47,8 @@ class DB extends \Cleantalk\Common\Db\Db {
      * @return bool|int Raw result
      */
     public function execute($query, $return_affected = false) {
-        $this->db_result = IpsDB::i()->query($query);
-        return $this->db_result;
+        $this->result = IpsDB::i()->query($query);
+        return $this->result instanceof \mysqli_result ? $this->result->fetch_all() : $this->result;
     }
 
     /**

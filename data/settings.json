@@ -58,5 +58,9 @@
     {
         "key": "cleantalk_cron_last_start",
         "default": ""
+    },
+    {
+        "key": "apbct_fw_stats",
+        "default": null
     }
 ]

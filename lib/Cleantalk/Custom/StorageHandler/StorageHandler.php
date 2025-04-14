@@ -27,7 +27,7 @@ class StorageHandler implements \Cleantalk\Common\StorageHandler\StorageHandler
 
     public static function getUpdatingFolder()
     {
-        // TODO: Implement getUpdatingFolder() method.
+        return \IPS\Application::getRootPath() . '/uploads';
     }
 
     public static function getJsLocation()

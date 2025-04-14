@@ -13,14 +13,12 @@ namespace IPS\antispambycleantalk;
 
 require_once(\IPS\Application::getRootPath().'/applications/antispambycleantalk/lib/autoload.php');
 
-use Cleantalk\Custom\Helper;
 use Cleantalk\Common\Antispam\Cleantalk;
 use Cleantalk\Common\Antispam\CleantalkRequest;
-use Cleantalk\Custom\Helper as CleantalkHelper;
-use Cleantalk\Custom\DB;
 use Cleantalk\Common\Firewall\Firewall;
-use IPS\Output;
-use IPS\Request;
+use Cleantalk\Custom\Db\Db;
+use Cleantalk\Custom\Helper\Helper;
+use Cleantalk\Custom\Helper\Helper as CleantalkHelper;
 
 define('APBCT_TBL_FIREWALL_DATA', 'cleantalk_sfw');      // Table with firewall data.
 define('APBCT_TBL_FIREWALL_LOG',  'cleantalk_sfw_logs'); // Table with firewall logs.
@@ -47,7 +45,7 @@ class Application extends \IPS\Application
         }
 
     }
-	static public function apbct_sfw_update($access_key = '') {
+	public static function apbct_sfw_update($access_key = '') {
 	    if( empty( $access_key ) ){
         	$access_key = \IPS\Settings::i()->ct_access_key;
         	if (empty($access_key)) {
@@ -56,16 +54,14 @@ class Application extends \IPS\Application
 	    }
         $firewall = new Firewall(
             $access_key,
-            DB::getInstance(),
             APBCT_TBL_FIREWALL_LOG
         );
-        $firewall->setSpecificHelper( new CleantalkHelper() );
-        $fw_updater = $firewall->getUpdater( APBCT_TBL_FIREWALL_DATA );
+        $fw_updater = $firewall->getUpdater();
         $fw_updater->update();
 
         return true;
 	}
-	static public function apbct_sfw_send_logs($access_key = '') {
+	public static function apbct_sfw_send_logs($access_key = '') {
 	    if( empty( $access_key ) ){
         	$access_key = \IPS\Settings::i()->ct_access_key;
         	if (empty($access_key)) {
@@ -73,7 +69,7 @@ class Application extends \IPS\Application
         	}
 	    }
 
-        $firewall = new Firewall( $access_key, DB::getInstance(), APBCT_TBL_FIREWALL_LOG );
+        $firewall = new Firewall( $access_key, Db::getInstance(), APBCT_TBL_FIREWALL_LOG );
 		$firewall->setSpecificHelper( new CleantalkHelper() );
         $result = $firewall->sendLogs();
 
