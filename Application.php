@@ -95,12 +95,17 @@ class Application extends \IPS\Application
         return $application->version;
     }
 
-    public static function spamCheck($reg_flag = false)
+    public static function spamCheck($request_params, $reg_flag = false)
     {
         $ct_access_key = \IPS\Settings::i()->ct_access_key;
 
+        if ( ! $ct_access_key ) {
+            return false;
+        }
+
         $lang = \IPS\Lang::getEnabledLanguages();
         $locale = $lang[\IPS\Lang::defaultLanguage()]->short;
+
         // Pointer data
         $pointer_data = (isset($_COOKIE['ct_pointer_data']) ? json_decode($_COOKIE['ct_pointer_data']) : 0);
         // Timezone from JS
@@ -109,7 +114,14 @@ class Application extends \IPS\Application
         $first_key_press_timestamp = isset($_COOKIE['ct_fkp_timestamp']) ? $_COOKIE['ct_fkp_timestamp'] : 0;
         // Page opened timestamp
         $page_set_timestamp = (isset($_COOKIE['ct_ps_timestamp']) ? $_COOKIE['ct_ps_timestamp'] : 0);
-        $arr = array(
+
+        $ct = new Cleantalk();
+        $ct->server_url = \IPS\Settings::i()->ct_server_url;
+        $ct->work_url = \IPS\Settings::i()->ct_work_url;
+        $ct->server_ttl = \IPS\Settings::i()->ct_server_ttl;
+        $ct->server_changed = \IPS\Settings::i()->ct_server_changed;
+
+        $default_sender_info = [
             'cms_lang' => $locale,
             'REFFERRER' => $_SERVER['HTTP_REFERER'],
             'USER_AGENT' => $_SERVER['HTTP_USER_AGENT'],
@@ -120,46 +132,43 @@ class Application extends \IPS\Application
             'REFFERRER_PREVIOUS' => isset($_COOKIE['ct_prev_referer']) ? $_COOKIE['ct_prev_referer'] : null,
             'cookies_enabled' => self::ctCookiesTest(),
             'site_url' => $_SERVER['HTTP_HOST'],
-        );
-        $sender_info = json_encode($arr);
-        $arr = array(
-            'comment_type' => 'register',
-        );
+        ];
+        $sender_info = isset($request_params['sender_info'])
+            ? array_merge($default_sender_info, $request_params['sender_info'])
+            : $default_sender_info;
 
-        $post_info = json_encode($arr);
+        $default_post_info = [
+            // @ToDo add default values if needed
+        ];
+        $post_info = isset($request_params['post_info'])
+            ? array_merge($default_post_info, $request_params['post_info'])
+            : $default_post_info;
 
-        if ( $sender_info === false ) {
-            $sender_info = '';
+        $default_request_params = [
+            'auth_key' => $ct_access_key,
+            'js_on' => isset($_COOKIE['ct_checkjs']) && in_array($_COOKIE['ct_checkjs'], self::getCheckJSArray()) ? 1 : 0,
+            'sender_ip' => Helper::ipGet('real', false),
+            'x_forwarded_for' => Helper::ipGet('x_forwarded_for', false),
+            'x_real_ip' => Helper::ipGet('x_real_ip', false),
+            'sender_email' => '',
+            'sender_nickname' => '',
+            'agent' => 'ips5-' . self::getAntispamModuleVersion(),
+        ];
+
+        if ( isset($_COOKIE['ct_ps_timestamp']) ) {
+            $default_request_params[] = time() - (int)$_COOKIE['ct_ps_timestamp'];
         }
-        if ( $post_info === false ) {
-            $post_info = '';
-        }
-        $config_key = $ct_access_key;
-        $ct = new Cleantalk();
-        $ct->server_url = \IPS\Settings::i()->ct_server_url;
-        $ct->work_url = \IPS\Settings::i()->ct_work_url;
-        $ct->server_ttl = \IPS\Settings::i()->ct_server_ttl;
-        $ct->server_changed = \IPS\Settings::i()->ct_server_changed;
 
-        $sender_email = filter_var($_POST['email_address'], FILTER_SANITIZE_EMAIL);
-
-        $ct_request = new CleantalkRequest();
-        $ct_request->auth_key = $config_key;
-        $ct_request->sender_nickname = $_POST['username'];
-
-        $ct_request->sender_ip = Helper::ipGet('real', false);
-        $ct_request->x_forwarded_for = Helper::ipGet('x_forwarded_for', false);
-        $ct_request->x_real_ip = Helper::ipGet('x_real_ip', false);
-
-        $ct_request->sender_email = $sender_email;
-        $ct_request->sender_info = $sender_info;
-        $ct_request->post_info = $post_info;
-        $ct_request->agent = 'ips5-' . self::getAntispamModuleVersion();
-        $ct_request->js_on = isset($_COOKIE['ct_checkjs']) && in_array($_COOKIE['ct_checkjs'], self::getCheckJSArray()) ? 1 : 0;
-        $ct_request->submit_time = isset($_COOKIE['ct_ps_timestamp']) ? time() - (int)$_COOKIE['ct_ps_timestamp'] : 0;
         if ( isset($_POST['ct_bot_detector_event_token']) ) {
-            $ct_request->event_token = $_POST['ct_bot_detector_event_token'];
+            $default_request_params['event_token'] = $_POST['ct_bot_detector_event_token'];
         }
+        $request_params = array_merge($default_request_params, $request_params);
+
+        $request_params['sender_info'] = $sender_info;
+        $request_params['post_info'] = $post_info;
+
+        $ct_request = new CleantalkRequest($request_params);
+
         $result = $reg_flag ? $ct->isAllowUser($ct_request) : $ct->isAllowMessage($ct_request);
         if ( $ct->server_change ) {
             \IPS\Settings::i()->ct_work_url = $ct->work_url;
