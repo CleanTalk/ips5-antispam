@@ -40,6 +40,11 @@ class Loader extends LoaderAbstract
             Output::i()->jsFilesAsync[] = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
         }
 
+        if( \IPS\Settings::i()->ct_show_link == 1 ) {
+            $html = Output::i()->output;
+            Output::i()->output = $html . "<div id='cleantalk_footer_link' style='width:100%;text-align:center;'><a href='https://cleantalk.org/ips-cs-4-anti-spam-plugin'>IPS spam</a> blocked by CleanTalk.</div>";
+        }
+
         $this->runCron();
         $this->runRc();
 
