@@ -3,5 +3,10 @@
         "type": "MemberListenerType",
         "classname": "IPS\\antispambycleantalk\\listeners\\Register",
         "extends": "IPS\\Member"
+    },
+    "NewPost": {
+        "type": "ContentListenerType",
+        "classname": "IPS\\antispambycleantalk\\listeners\\NewPost",
+        "extends": "IPS\\Content\\Item"
     }
 }
