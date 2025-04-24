@@ -107,7 +107,7 @@ class settings extends \IPS\Dispatcher\Controller
         //add a block with custom table of spammers found
         if ( \IPS\Settings::i()->ct_spam_check ) {
             //get spammer users (has a set bitoption)
-            $select = \IPS\_Db::i()->select('member_id,name,email,ip_address', 'core_members', array('members_bitoptions=?', '65537'))->setKeyField('member_id');
+            $select = \IPS\Db::i()->select('member_id,name,email,ip_address', 'core_members', array('members_bitoptions=?', '65537'))->setKeyField('member_id');
             foreach ( $select as $key => $value ) {
                 $spammers[$value['member_id']] = array(
                     'email' => $value['email'],
@@ -116,7 +116,7 @@ class settings extends \IPS\Dispatcher\Controller
                 );
             }
             //get history of last check
-            $select = \IPS\_Db::i()->select('log_member,log_date', 'core_member_history', array('log_type=? and log_data=?', 'ct_check', '{"spammer":"1"}'))->setKeyField('log_member');
+            $select = \IPS\Db::i()->select('log_member,log_date', 'core_member_history', array('log_type=? and log_data=?', 'ct_check', '{"spammer":"1"}'))->setKeyField('log_member');
             foreach ( $select as $key => $value ) {
                 $history[$key] = array(
                     'log_date' => $value['log_date']
@@ -148,7 +148,8 @@ class settings extends \IPS\Dispatcher\Controller
             }
 
             $confirm_popup_text = 'This action will check all members for spam and mark them as spammers if they are found in the spammer database. Make sure you have a backup.';
-            $button = '<a target="_blank" title="Run spam check and proceed to the full list of users" class="ipsUrl" href="?app=core&module=members&controller=members&sortby=joined&filter=members_filter_spam&ct_spam_check_run=1"  onclick="return confirm(\'' . $confirm_popup_text . '\');">Click to check users for spam</a>';
+            //$button = '<a target="_blank" title="Run spam check and proceed to the full list of users" class="ipsUrl" href="?app=core&module=members&controller=members&sortby=joined&filter=members_filter_spam&ct_spam_check_run=1"  onclick="return confirm(\'' . $confirm_popup_text . '\');">Click to check users for spam</a>';
+            $button = 'This function will be available soon';
             $block .= '<tr><td colspan="5" style="text-align: center">' . $button . '</td></tr>';
             $block .= '</tbody></table>';
 
