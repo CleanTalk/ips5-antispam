@@ -55,7 +55,7 @@ class NewPost extends ContentListenerType
                     'comment_type' => 'comment'
                 ],
                 'sender_email' => $member ? $member->email : '',
-                'message' => $values['topic_title'] . ' ' . $values['topic_content'],
+                'message' => $values['topic_title'] . ' ' . trim(strip_tags($values['topic_content'])),
             ];
             if(isset($_POST['guest_name'])) {
                 $request_params['sender_nickname'] = $_POST['guest_name'];

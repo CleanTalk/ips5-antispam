@@ -175,6 +175,7 @@ class Application extends \IPS\Application
             \IPS\Settings::i()->ct_server_ttl = $ct->server_ttl;
             \IPS\Settings::i()->ct_server_changed = time();
         }
+
         return $result;
     }
 
