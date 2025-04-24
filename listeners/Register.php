@@ -31,7 +31,15 @@ class Register extends MemberListenerType
 {
     public function onCreateAccount(MemberClass $member)
     {
-        $ct_result = Application::spamCheck(true);
+        $request_params = [
+            'post_info' => [
+                'comment_type' => 'register'
+            ],
+            'sender_email' => $member->email,
+            'sender_nickname' => $member->get_name(),
+        ];
+
+        $ct_result = Application::spamCheck($request_params, true);
 
         if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
             // Spammer - delete this user
