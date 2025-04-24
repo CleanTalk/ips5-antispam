@@ -3,6 +3,9 @@
         "AdminNotifications": {
             "Notification": "IPS\\antispambycleantalk\\extensions\\core\\AdminNotifications\\Notification"
         },
+        "ContactUs": {
+            "ContactUs": "IPS\\antispambycleantalk\\extensions\\core\\ContactUs\\ContactUs"
+        },
         "Loader": {
             "Loader": "IPS\\antispambycleantalk\\extensions\\core\\Loader\\Loader"
         },
