@@ -39,7 +39,7 @@ class Application extends \IPS\Application
         // Show admin notification about empty key
         $coreApp = \IPS\Application::load('core');
         if( \version_compare( $coreApp->version, '4.4.0') >= 0 ) {
-            if( ! \IPS\Settings::i()->ct_access_key ) {
+            if( ! \IPS\Settings::i()->ct_access_key && class_exists('\IPS\antispambycleantalk\extensions\core\AdminNotifications\Notification') ) {
                 \IPS\core\AdminNotification::send( 'antispambycleantalk', 'Notification', 'keyIsEmpty', true );
             }
         }
