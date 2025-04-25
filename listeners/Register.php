@@ -29,8 +29,14 @@ if ( !defined('\IPS\SUITE_UNIQUE_KEY') ) {
  */
 class Register extends MemberListenerType
 {
-    public function onCreateAccount(MemberClass $member)
+    public function onCreateAccount(MemberClass $member): void
     {
+        $current_user = \IPS\Member::loggedIn();
+        if ( $current_user && $current_user->isAdmin() ) {
+            error_log(var_export($member->get_name() . ' register check excluded.', 1));
+            return;
+        }
+
         $request_params = [
             'post_info' => [
                 'comment_type' => 'register'
