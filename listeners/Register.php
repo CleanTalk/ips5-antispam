@@ -50,6 +50,7 @@ class Register extends MemberListenerType
         if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
             // Spammer - delete this user
             $member->delete();
+            die($ct_result->comment);
         }
     }
 }
