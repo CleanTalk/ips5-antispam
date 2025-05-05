@@ -126,8 +126,8 @@ class settings extends \IPS\Dispatcher\Controller
             $history = !empty($history) ? \array_slice($history, -10, 10, true) : null;
             //draw block HTML
             $block = '<table class="ipsTable"><tbody>';
-            $block .= '<tr><td colspan="5" style="text-align: center"><h3>List of last 10 spammers found</h3></td></tr>';
-            $block .= '<tr><th>Member ID</th><th>Username</th><th>Email</th><th>IP address</th><th>Last check</th></tr>';
+            $block .= '<tr><td colspan="5" style="text-align: center"><h3>Users checker</h3></td></tr>';
+            /*$block .= '<tr><th>Member ID</th><th>Username</th><th>Email</th><th>IP address</th><th>Last check</th></tr>';
 
             if ( !empty($spammers) && \is_array($spammers) ) {
                 foreach ( $spammers as $key => $value ) {
@@ -145,7 +145,7 @@ class settings extends \IPS\Dispatcher\Controller
                 }
             } else {
                 $block .= '<tr><td colspan="5" style="text-align: center">No spammers found.</td></tr>';
-            }
+            }*/
 
             $confirm_popup_text = 'This action will check all members for spam and mark them as spammers if they are found in the spammer database. Make sure you have a backup.';
             //$button = '<a target="_blank" title="Run spam check and proceed to the full list of users" class="ipsUrl" href="?app=core&module=members&controller=members&sortby=joined&filter=members_filter_spam&ct_spam_check_run=1"  onclick="return confirm(\'' . $confirm_popup_text . '\');">Click to check users for spam</a>';
