@@ -69,7 +69,7 @@ class Loader extends LoaderAbstract
                 )
             ) );
 
-            $firewall->run();
+            //$firewall->run();
 
         }
         // Remote calls
