@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="antispambycleantalk" version="30000">
+ <app key="antispambycleantalk" version="10000">
   <word key="__app_antispambycleantalk" js="0">Antispam by Cleantalk</word>
   <word key="ct_contact_form_check" js="0">Protect contact form</word>
   <word key="ct_moderate_new" js="0">Moderate new users posts</word>

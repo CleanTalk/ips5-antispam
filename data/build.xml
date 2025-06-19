@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <build>
- <module key="admin/antispambycleantalk"><![CDATA[{"default_controller":"","protected":false,"default":null}]]></module>
+ <module key="admin/antispambycleantalk"><![CDATA[{"default_controller":"","protected":0,"default":0}]]></module>
  <setting key="ct_access_key"><![CDATA[{"key":"ct_access_key","default":"0"}]]></setting>
  <setting key="ct_cleantalk_sfw"><![CDATA[{"key":"ct_cleantalk_sfw","default":"0"}]]></setting>
  <setting key="ct_cleantalk_show_banner"><![CDATA[{"key":"ct_cleantalk_show_banner","default":"0"}]]></setting>
@@ -15,4 +15,6 @@
  <setting key="ct_work_url"><![CDATA[{"key":"ct_work_url","default":"0"}]]></setting>
  <setting key="ct_errors"><![CDATA[{"key":"ct_errors","default":""}]]></setting>
  <setting key="cleantalk_cron"><![CDATA[{"key":"cleantalk_cron","default":""}]]></setting>
+ <setting key="cleantalk_cron_last_start"><![CDATA[{"key":"cleantalk_cron_last_start","default":""}]]></setting>
+ <setting key="apbct_fw_stats"><![CDATA[{"key":"apbct_fw_stats","default":null}]]></setting>
 </build>
