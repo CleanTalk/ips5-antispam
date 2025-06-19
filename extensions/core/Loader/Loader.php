@@ -46,7 +46,7 @@ class Loader extends LoaderAbstract
         }
 
         $this->runCron();
-        $this->runRc();
+        //$this->runRc();
 
         if(
             \IPS\Settings::i()->ct_cleantalk_sfw == 1 &&
