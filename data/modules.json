@@ -6,11 +6,5 @@
             "default": 0
         }
     },
-    "front": {
-        "antispambycleantalk": {
-            "default_controller": "",
-            "protected": false,
-            "default": null
-        }
-    }
+    "front": []
 }

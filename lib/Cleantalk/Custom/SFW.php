@@ -1,6 +1,6 @@
 <?php
 
-namespace Cleantalk\ApbctIPS;
+namespace Cleantalk\Custom;
 
 use Cleantalk\Common\Variables\Cookie;
 
@@ -15,7 +15,7 @@ class SFW extends \Cleantalk\Common\Firewall\Modules\SFW {
             unset($_COOKIE['ct_sfw_pass_key']);
             \Cleantalk\Common\Helper::apbct_cookie__set( 'ct_sfw_pass_key', '0', time() + 86400 * 3, '/', null, false, true, 'Lax' );
         }
-		
+
 		// Skip by cookie
 		foreach( $this->ip_array as $current_ip ){
 
@@ -41,7 +41,7 @@ class SFW extends \Cleantalk\Common\Firewall\Modules\SFW {
 				}
 			}
 		}
-		
+
 		// Common check
 		foreach( $this->ip_array as $origin => $current_ip )
 		{
@@ -52,7 +52,7 @@ class SFW extends \Cleantalk\Common\Firewall\Modules\SFW {
 				$needles[] = sprintf( "%u", bindec( $mask & base_convert( $current_ip_v4, 10, 2 ) ) );
 			}
 			$needles = array_unique( $needles );
-			
+
 			$db_results = $this->db->fetch_all("SELECT
 				network, mask, status
 				FROM " . $this->db_data_table_name . "
@@ -63,7 +63,7 @@ class SFW extends \Cleantalk\Common\Firewall\Modules\SFW {
 
             $test_status = 1;
 			if( ! empty( $db_results ) ){
-				
+
 				foreach( $db_results as $db_result ){
 
 					if( $db_result['status'] == 1 ) {
@@ -82,9 +82,9 @@ class SFW extends \Cleantalk\Common\Firewall\Modules\SFW {
 				}
 
 			}else{
-				
+
 				$results[] = array( 'ip' => $current_ip, 'is_personal' => false, 'status' => 'PASS_SFW' );
-				
+
 			}
             if ( $this->test && $origin === 'sfw_test' ) {
                 $this->test_status = $test_status;

@@ -29,13 +29,28 @@ if ( !defined('\IPS\SUITE_UNIQUE_KEY') ) {
  */
 class Register extends MemberListenerType
 {
-    public function onCreateAccount(MemberClass $member)
+    public function onCreateAccount(MemberClass $member): void
     {
-        $ct_result = Application::spamCheck(true);
+        $current_user = \IPS\Member::loggedIn();
+        if ( $current_user && $current_user->isAdmin() ) {
+            error_log(var_export($member->get_name() . ' register check excluded.', 1));
+            return;
+        }
+
+        $request_params = [
+            'post_info' => [
+                'comment_type' => 'register'
+            ],
+            'sender_email' => $member->email,
+            'sender_nickname' => $member->get_name(),
+        ];
+
+        $ct_result = Application::spamCheck($request_params, true);
 
         if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
             // Spammer - delete this user
             $member->delete();
+            die($ct_result->comment);
         }
     }
 }

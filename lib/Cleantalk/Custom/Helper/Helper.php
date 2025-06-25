@@ -1,6 +1,6 @@
 <?php
 
-namespace Cleantalk\ApbctIPS;
+namespace Cleantalk\Custom\Helper;
 
 class Helper extends \Cleantalk\Common\Helper\Helper {
 

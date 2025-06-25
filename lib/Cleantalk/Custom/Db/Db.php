@@ -1,9 +1,11 @@
 <?php
 
-namespace Cleantalk\ApbctIPS;
+namespace Cleantalk\Custom\Db;
 use IPS\Db as IpsDB;
 
-class DB extends \Cleantalk\Common\DB {
+class Db extends \Cleantalk\Common\Db\Db {
+    private $query;
+
     /**
      * Alternative constructor.
      * Initilize Database object and write it to property.
@@ -19,7 +21,7 @@ class DB extends \Cleantalk\Common\DB {
      * @param $query
      * @return $this
      */
-    public function set_query( $query ) {
+    public function setQuery( $query ) {
         $this->query = $query;
         return $this;
     }
@@ -30,23 +32,23 @@ class DB extends \Cleantalk\Common\DB {
      * @param string $query
      * @param array  $vars
      *
-     * @return $this
+     * @return bool|\mysqli_result|\mysqli_stmt|string
      */
     public function prepare( $query, $vars = array() ) {
-        $this->db_result = IpsDB::i()->preparedQuery($query, $vars);
-        return $this->db_result;
+        $this->result = IpsDB::i()->preparedQuery($query, $vars);
+        return $this->result;
     }
 
     /**
-     * Run any raw request
+     * Run any raw request     *
      *
-     * @param $query
-     *
+     * @param string $query
+     * @param false $return_affected
      * @return bool|int Raw result
      */
-    public function execute( $query ) {
-        $this->db_result = IpsDB::i()->query($query);
-        return $this->db_result;
+    public function execute($query, $return_affected = false) {
+        $this->result = IpsDB::i()->query($query);
+        return $this->result instanceof \mysqli_result ? $this->result->fetch_all() : $this->result;
     }
 
     /**
@@ -73,14 +75,15 @@ class DB extends \Cleantalk\Common\DB {
      *
      * @return array|object|null
      */
-    public function fetch_all( $query = false, $response_type = false ) {
+    public function fetchAll( $query = false, $response_type = false ) {
         foreach (IpsDB::i()->query($query) as $row) {
             $this->result[] = $row;
         }
         return $this->result;
     }
 
-    public function get_last_error() {
-
+    public function getAffectedRows()
+    {
+        // TODO: Implement getAffectedRows() method.
     }
 }
