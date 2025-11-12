@@ -37,7 +37,7 @@ class Loader extends LoaderAbstract
         }
 
         if ( Dispatcher::hasInstance() && Dispatcher::checkLocation('front') ) {
-            Output::i()->jsFilesAsync[] = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+            Output::i()->jsFilesAsync[] = 'https://fd.cleantalk.org/ct-bot-detector-wrapper.js';
         }
 
         if( \IPS\Settings::i()->ct_show_link == 1 ) {
