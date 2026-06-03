@@ -2,6 +2,7 @@
 
 $lang = array(
 	'__app_antispambycleantalk'	=> "Antispam by Cleantalk",
+    '__app_antispambycleantalk_description'	=> "Invision Community 5.0+ (IPS 5) anti-spam extension.",
     'ct_contact_form_check' => 'Protect contact form',
     'ct_moderate_new' => 'Moderate new users posts',
     'ct_access_key' => 'Access key',

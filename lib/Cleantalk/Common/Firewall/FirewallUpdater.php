@@ -125,6 +125,9 @@ class FirewallUpdater
             ['test' => 'test']
         );
 
+        // Clear errors here
+        $this->fwStats->errors = [];
+
         // Set a new update ID and an update time start
         $this->fwStats->calls = 0;
         $this->fwStats->updating_id = md5((string)rand(0, 100000));
@@ -610,10 +613,6 @@ class FirewallUpdater
         $db_class = Mloader::get('Db');
         $db_obj = $db_class::getInstance();
 
-        if ( !$db_obj->isTableExists($db_obj->prefix . APBCT_TBL_FIREWALL_DATA) ) {
-            throw new SfwUpdateException('endOfUpdateRenamingTables: SFW main table does not exist');
-        }
-
         if ( !$db_obj->isTableExists($db_obj->prefix . APBCT_TBL_FIREWALL_DATA . '_temp') ) {
             throw new SfwUpdateException('endOfUpdateRenamingTables: SFW temp table does not exist');
         }
@@ -622,17 +621,11 @@ class FirewallUpdater
         Firewall::saveFwStats($fw_stats);
         usleep(10000);
 
-        // REMOVE AND RENAME
-        $result = \Cleantalk\Common\Firewall\Modules\Sfw::dataTablesDelete(
+        // ATOMIC REMOVE AND RENAME
+        $result = \Cleantalk\Common\Firewall\Modules\Sfw::replaceDataTablesAtomically(
             $db_obj,
             $db_obj->prefix . APBCT_TBL_FIREWALL_DATA
         );
-        if ( empty($result['error']) ) {
-            $result = \Cleantalk\Common\Firewall\Modules\Sfw::renameDataTablesFromTempToMain(
-                $db_obj,
-                $db_obj->prefix . APBCT_TBL_FIREWALL_DATA
-            );
-        }
 
         $fw_stats->update_mode = 0;
         Firewall::saveFwStats($fw_stats);
@@ -998,9 +991,11 @@ class FirewallUpdater
     private function saveSfwUpdateError(SfwUpdateException $e)
     {
         $fw_stats = Firewall::getFwStats();
-        $fw_stats->errors[] = $e->getMessage();
+        $fw_stats->errors[time()] = $e->getMessage();
         Firewall::saveFwStats($fw_stats);
-        error_log($e->getMessage());
+        if ( $this->debug ) {
+            error_log($e->getMessage());
+        }
     }
 
     /**

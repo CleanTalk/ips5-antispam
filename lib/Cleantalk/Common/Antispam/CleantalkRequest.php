@@ -182,6 +182,11 @@ class CleantalkRequest
     /**
      * @var string|null
      */
+    public $event_token_enabled;
+
+    /**
+     * @var string|null
+     */
     public $event_javascript_data;
 
     /**
@@ -247,6 +252,7 @@ class CleantalkRequest
         $this->exception_action = isset($params['exception_action']) ? (int)$params['exception_action'] : null;
 
         $this->event_token = isset($params['event_token']) ? (string)$params['event_token'] : null;
+        $this->event_token_enabled = isset($params['event_token_enabled']) ? (string)$params['event_token_enabled'] : null;
         $this->event_javascript_data = isset($params['event_javascript_data']) ? (string)$params['event_javascript_data'] : null;
         $this->browser_sign = isset($params['browser_sign']) ? (string)$params['browser_sign'] : null;
         $this->event_type = isset($params['event_type']) ? (string)$params['event_type'] : null;
@@ -256,12 +262,12 @@ class CleantalkRequest
             ? (!is_scalar($params['message'])
                 ? serialize($params['message'])
                 : $params['message'])
-            : '';
+            : null;
         $this->example = !empty($params['example'])
             ? (!is_scalar($params['example'])
                 ? serialize($params['example'])
                 : $params['example'])
-            : '';
+            : null;
 
         // Feedback
         $this->feedback = !empty($params['feedback']) ? $params['feedback'] : null;

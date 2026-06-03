@@ -53,7 +53,7 @@ class ContactUs extends ContactUsAbstract
      */
 	public function runBeforeFormOutput( Form $form ) : void
 	{
-        if ( empty($_POST) ) {
+        if ( empty($_POST) || \IPS\Request::i()->isAjax() ) {
             return;
         }
         $values = $_POST;
@@ -74,14 +74,6 @@ class ContactUs extends ContactUsAbstract
             $ct_result = Application::spamCheck($request_params);
 
             if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
-                // @ToDo need to find how to output correct block message
-                if ( \IPS\Request::i()->isAjax() ) {
-                    $result = [
-                        "validate" => 0,
-                        "error" => $ct_result->comment
-                    ];
-                    die(json_encode($result));
-                }
                 die($ct_result->comment);
             }
         }

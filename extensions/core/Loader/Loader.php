@@ -37,12 +37,14 @@ class Loader extends LoaderAbstract
         }
 
         if ( Dispatcher::hasInstance() && Dispatcher::checkLocation('front') ) {
-            Output::i()->jsFilesAsync[] = 'https://moderate.cleantalk.org/ct-bot-detector-wrapper.js';
+            Output::i()->jsFilesAsync[] = 'https://fd.cleantalk.org/ct-bot-detector-wrapper.js';
         }
 
         if( \IPS\Settings::i()->ct_show_link == 1 ) {
             $html = Output::i()->output;
-            Output::i()->output = $html . "<div id='cleantalk_footer_link' style='width:100%;text-align:center;'><a href='https://cleantalk.org/ips-cs-4-anti-spam-plugin'>IPS spam</a> blocked by CleanTalk.</div>";
+            Output::i()->output = $html . 
+            "<div id='cleantalk_footer_link' style='width:100%;text-align:center;'>IPS spam
+            blocked <a href='https://cleantalk.org/ips-cs-4-anti-spam-plugin'>by CleanTalk</a>.</div>";
         }
 
         $this->runCron();
