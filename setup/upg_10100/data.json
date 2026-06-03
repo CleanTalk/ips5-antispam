@@ -3,7 +3,7 @@
     "name": "1.1.0",
     "steps": {
         "queries": false,
-        "lang": false,
+        "lang": true,
         "theme": false,
         "themeeditor": false,
         "javascript": false,
