@@ -37,6 +37,11 @@ class Register extends MemberListenerType
             return;
         }
 
+        if ( isset($member->cleantalk_skip) && $member->cleantalk_skip === true ) {
+            // Exclusion for manual member creating
+            return;
+        }
+
         $request_params = [
             'post_info' => [
                 'comment_type' => 'register'
