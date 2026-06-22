@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
- <app key="antispambycleantalk" version="10100">
+ <app key="antispambycleantalk" version="10101">
   <word key="__app_antispambycleantalk" js="0">Antispam by Cleantalk</word>
   <word key="__app_antispambycleantalk_description" js="0">Invision Community 5.0+ (IPS 5) anti-spam extension.</word>
   <word key="ct_contact_form_check" js="0">Protect contact form</word>
