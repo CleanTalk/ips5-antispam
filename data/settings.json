@@ -60,6 +60,14 @@
         "default": ""
     },
     {
+        "key": "cleantalk_cron_pid",
+        "default": ""
+    },
+    {
+        "key": "sfw_update_queue",
+        "default": ""
+    },
+    {
         "key": "apbct_fw_stats",
         "default": null
     }

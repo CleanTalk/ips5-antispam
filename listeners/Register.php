@@ -33,7 +33,6 @@ class Register extends MemberListenerType
     {
         $current_user = \IPS\Member::loggedIn();
         if ( $current_user && $current_user->isAdmin() ) {
-            error_log(var_export($member->get_name() . ' register check excluded.', 1));
             return;
         }
 
@@ -50,7 +49,7 @@ class Register extends MemberListenerType
         if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
             // Spammer - delete this user
             $member->delete();
-            die($ct_result->comment);
+            \IPS\Output::i()->error($ct_result->comment, 'antispambycleantalk_blocked', 403, '');
         }
     }
 }
