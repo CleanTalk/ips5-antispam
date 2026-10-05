@@ -16,5 +16,7 @@
  <setting key="ct_errors"><![CDATA[{"key":"ct_errors","default":""}]]></setting>
  <setting key="cleantalk_cron"><![CDATA[{"key":"cleantalk_cron","default":""}]]></setting>
  <setting key="cleantalk_cron_last_start"><![CDATA[{"key":"cleantalk_cron_last_start","default":""}]]></setting>
+ <setting key="cleantalk_cron_pid"><![CDATA[{"key":"cleantalk_cron_pid","default":""}]]></setting>
+ <setting key="sfw_update_queue"><![CDATA[{"key":"sfw_update_queue","default":""}]]></setting>
  <setting key="apbct_fw_stats"><![CDATA[{"key":"apbct_fw_stats","default":null}]]></setting>
 </build>
