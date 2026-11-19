@@ -16,9 +16,7 @@ require_once(\IPS\Application::getRootPath().'/applications/antispambycleantalk/
 use Cleantalk\Common\Antispam\Cleantalk;
 use Cleantalk\Common\Antispam\CleantalkRequest;
 use Cleantalk\Common\Firewall\Firewall;
-use Cleantalk\Custom\Db\Db;
 use Cleantalk\Custom\Helper\Helper;
-use Cleantalk\Custom\Helper\Helper as CleantalkHelper;
 
 define('APBCT_TBL_FIREWALL_DATA', 'cleantalk_sfw');      // Table with firewall data.
 define('APBCT_TBL_FIREWALL_LOG',  'cleantalk_sfw_logs'); // Table with firewall logs.
@@ -69,9 +67,8 @@ class Application extends \IPS\Application
         	}
 	    }
 
-        $firewall = new Firewall( $access_key, Db::getInstance(), APBCT_TBL_FIREWALL_LOG );
-		$firewall->setSpecificHelper( new CleantalkHelper() );
-        $result = $firewall->sendLogs();
+        $firewall = new Firewall( $access_key, APBCT_TBL_FIREWALL_LOG );
+        $firewall->sendLogs();
 
         return true;
 	}
@@ -123,15 +120,15 @@ class Application extends \IPS\Application
 
         $default_sender_info = [
             'cms_lang' => $locale,
-            'REFFERRER' => $_SERVER['HTTP_REFERER'],
-            'USER_AGENT' => $_SERVER['HTTP_USER_AGENT'],
+            'REFFERRER' => $_SERVER['HTTP_REFERER'] ?? '',
+            'USER_AGENT' => $_SERVER['HTTP_USER_AGENT'] ?? '',
             'mouse_cursor_positions' => $pointer_data,
             'js_timezone' => $js_timezone,
             'key_press_timestamp' => $first_key_press_timestamp,
             'page_set_timestamp' => $page_set_timestamp,
             'REFFERRER_PREVIOUS' => isset($_COOKIE['ct_prev_referer']) ? $_COOKIE['ct_prev_referer'] : null,
             'cookies_enabled' => self::ctCookiesTest(),
-            'site_url' => $_SERVER['HTTP_HOST'],
+            'site_url' => $_SERVER['HTTP_HOST'] ?? '',
         ];
         $sender_info = isset($request_params['sender_info'])
             ? array_merge($default_sender_info, $request_params['sender_info'])
@@ -156,7 +153,7 @@ class Application extends \IPS\Application
         ];
 
         if ( isset($_COOKIE['ct_ps_timestamp']) ) {
-            $default_request_params[] = time() - (int)$_COOKIE['ct_ps_timestamp'];
+            $default_request_params['submit_time'] = time() - (int)$_COOKIE['ct_ps_timestamp'];
         }
 
         if ( isset($_POST['ct_bot_detector_event_token']) ) {

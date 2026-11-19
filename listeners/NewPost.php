@@ -44,30 +44,54 @@ class NewPost extends ContentListenerType
     {
         $member = Member::loggedIn();
         if (
-            $member &&
-            \IPS\Settings::i()->ct_moderate_new == 1 &&
-            $member->member_posts <= \IPS\Settings::i()->ct_posts_to_check &&
-            $new &&
-            ! $member->isAdmin()
+            \IPS\Settings::i()->ct_moderate_new != 1 ||
+            ! $new ||
+            $member->member_posts > \IPS\Settings::i()->ct_posts_to_check ||
+            $member->isAdmin()
         ) {
-            $request_params = [
-                'post_info' => [
-                    'comment_type' => 'comment'
-                ],
-                'sender_email' => $member ? $member->email : '',
-                'message' => $values['topic_title'] . ' ' . trim(strip_tags($values['topic_content'])),
-            ];
-            if(isset($_POST['guest_name'])) {
-                $request_params['sender_nickname'] = $_POST['guest_name'];
-            } else {
-                $request_params['sender_nickname'] = $member->name;
-            }
-
-            $ct_result = Application::spamCheck($request_params);
-
-            if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
-                die($ct_result->comment);
-            }
+            return;
         }
+
+        $message = trim(static::getMessage($object, $values));
+
+        if ( $message === '' ) {
+            return;
+        }
+
+        $request_params = [
+            'post_info' => [
+                'comment_type' => 'comment'
+            ],
+            'sender_email' => $member->email,
+            'sender_nickname' => $values['guest_name'] ?? $member->name,
+            'message' => $message,
+        ];
+
+        $ct_result = Application::spamCheck($request_params);
+
+        if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
+            \IPS\Output::i()->error($ct_result->comment, 'antispambycleantalk_blocked', 403, '');
+        }
+    }
+
+    /**
+     * Content classes name their form fields after their own prefix, so the keys cannot be hardcoded.
+     */
+    protected static function getMessage(ContentClass $object, array $values): string
+    {
+        $prefix = $object::$formLangPrefix;
+
+        $title = $values[$prefix . 'title'] ?? '';
+        $content = $values[$prefix . 'content'] ?? '';
+
+        if ( ! is_string($title) ) {
+            $title = '';
+        }
+
+        if ( ! is_string($content) ) {
+            $content = '';
+        }
+
+        return $title . ' ' . trim(strip_tags($content));
     }
 }
