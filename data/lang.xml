@@ -4,7 +4,7 @@
   <word key="__app_antispambycleantalk" js="0">Antispam by Cleantalk</word>
   <word key="__app_antispambycleantalk_description" js="0">Invision Community 5.0+ (IPS 5) anti-spam extension.</word>
   <word key="ct_contact_form_check" js="0">Protect contact form</word>
-  <word key="ct_moderate_new" js="0">Moderate new users posts</word>
+  <word key="ct_moderate_new" js="0">Moderate new users' posts and replies</word>
   <word key="ct_access_key" js="0">Access key</word>
   <word key="ct_posts_to_check" js="0">Do not check users with posts more than</word>
   <word key="ct_show_link" js="0">Show link to CleanTalk</word>

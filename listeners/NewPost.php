@@ -15,12 +15,8 @@ namespace IPS\antispambycleantalk\listeners;
 
 use IPS\antispambycleantalk\Application;
 use IPS\Content as ContentClass;
-use IPS\Content\Comment as CommentClass;
-use IPS\Content\Item as ItemClass;
-use IPS\Db;
 use IPS\Events\ListenerType\ContentListenerType;
 use IPS\Member;
-use IPS\Node\Model;
 use function defined;
 
 if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
@@ -40,7 +36,7 @@ class NewPost extends ContentListenerType
  	 */
  	public static string $class = \IPS\Content\Item::class;
 
-    public function onBeforeCreateOrEdit(ContentClass $object, array $values, bool $new = false)
+    public function onBeforeCreateOrEdit(ContentClass $object, array $values, bool $new = false): void
     {
         $member = Member::loggedIn();
         if (
