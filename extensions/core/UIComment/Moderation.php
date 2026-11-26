@@ -24,7 +24,13 @@ class Moderation extends UIComment
 {
     public function formElements(?Comment $comment, Item $item): array
     {
-        if ( $comment !== null || ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' || !Settings::i()->ct_access_key ) {
+        $settings = Settings::i();
+        if (
+            $comment !== null ||
+            ($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST' ||
+            !$settings->ct_access_key ||
+            $settings->ct_check_comments != 1
+        ) {
             return [];
         }
 
@@ -35,7 +41,7 @@ class Moderation extends UIComment
         if (
             !isset($request->$submission) ||
             !Login::compareHashes(Session::i()->csrfKey, (string) $request->csrfKey) ||
-            !Application::shouldModerateNewContent($member)
+            !Application::canModerateContent($member)
         ) {
             return [];
         }

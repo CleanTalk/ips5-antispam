@@ -20,6 +20,10 @@
         "default": "0"
     },
     {
+        "key": "ct_check_comments",
+        "default": "0"
+    },
+    {
         "key": "ct_posts_to_check",
         "default": "10"
     },

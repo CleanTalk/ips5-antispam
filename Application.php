@@ -95,12 +95,9 @@ class Application extends \IPS\Application
         return $application->version;
     }
 
-    public static function shouldModerateNewContent(Member $member): bool
+    public static function canModerateContent(Member $member): bool
     {
-        $settings = Settings::i();
-
-        return $settings->ct_moderate_new == 1
-            && $member->member_posts <= $settings->ct_posts_to_check
+        return $member->member_posts <= Settings::i()->ct_posts_to_check
             && !$member->isAdmin();
     }
 

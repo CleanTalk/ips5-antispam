@@ -17,6 +17,7 @@ use IPS\antispambycleantalk\Application;
 use IPS\Content as ContentClass;
 use IPS\Events\ListenerType\ContentListenerType;
 use IPS\Member;
+use IPS\Settings;
 use function defined;
 
 if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
@@ -39,7 +40,7 @@ class NewPost extends ContentListenerType
     public function onBeforeCreateOrEdit(ContentClass $object, array $values, bool $new = false): void
     {
         $member = Member::loggedIn();
-        if ( !$new || !Application::shouldModerateNewContent($member) ) {
+        if ( !$new || Settings::i()->ct_moderate_new != 1 || !Application::canModerateContent($member) ) {
             return;
         }
 

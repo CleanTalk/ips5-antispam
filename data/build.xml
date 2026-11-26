@@ -6,6 +6,7 @@
  <setting key="ct_cleantalk_show_banner"><![CDATA[{"key":"ct_cleantalk_show_banner","default":"0"}]]></setting>
  <setting key="ct_contact_form_check"><![CDATA[{"key":"ct_contact_form_check","default":"0"}]]></setting>
  <setting key="ct_moderate_new"><![CDATA[{"key":"ct_moderate_new","default":"0"}]]></setting>
+ <setting key="ct_check_comments"><![CDATA[{"key":"ct_check_comments","default":"0"}]]></setting>
  <setting key="ct_posts_to_check"><![CDATA[{"key":"ct_posts_to_check","default":"10"}]]></setting>
  <setting key="ct_server_changed"><![CDATA[{"key":"ct_server_changed","default":"0"}]]></setting>
  <setting key="ct_server_ttl"><![CDATA[{"key":"ct_server_ttl","default":"0"}]]></setting>
