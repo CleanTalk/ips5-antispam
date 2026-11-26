@@ -1,0 +1,16 @@
+{
+    "normal": {
+        "added": [
+            "ct_check_comments"
+        ],
+        "edited": [
+            "ct_moderate_new"
+        ],
+        "removed": []
+    },
+    "js": {
+        "added": [],
+        "edited": [],
+        "removed": []
+    }
+}

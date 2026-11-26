@@ -15,12 +15,9 @@ namespace IPS\antispambycleantalk\listeners;
 
 use IPS\antispambycleantalk\Application;
 use IPS\Content as ContentClass;
-use IPS\Content\Comment as CommentClass;
-use IPS\Content\Item as ItemClass;
-use IPS\Db;
 use IPS\Events\ListenerType\ContentListenerType;
 use IPS\Member;
-use IPS\Node\Model;
+use IPS\Settings;
 use function defined;
 
 if ( !defined( '\IPS\SUITE_UNIQUE_KEY' ) )
@@ -40,38 +37,15 @@ class NewPost extends ContentListenerType
  	 */
  	public static string $class = \IPS\Content\Item::class;
 
-    public function onBeforeCreateOrEdit(ContentClass $object, array $values, bool $new = false)
+    public function onBeforeCreateOrEdit(ContentClass $object, array $values, bool $new = false): void
     {
         $member = Member::loggedIn();
-        if (
-            \IPS\Settings::i()->ct_moderate_new != 1 ||
-            ! $new ||
-            $member->member_posts > \IPS\Settings::i()->ct_posts_to_check ||
-            $member->isAdmin()
-        ) {
+        if ( !$new || Settings::i()->ct_moderate_new != 1 || !Application::canModerateContent($member) ) {
             return;
         }
 
-        $message = trim(static::getMessage($object, $values));
-
-        if ( $message === '' ) {
-            return;
-        }
-
-        $request_params = [
-            'post_info' => [
-                'comment_type' => 'comment'
-            ],
-            'sender_email' => $member->email,
-            'sender_nickname' => $values['guest_name'] ?? $member->name,
-            'message' => $message,
-        ];
-
-        $ct_result = Application::spamCheck($request_params);
-
-        if ( $ct_result && isset($ct_result->errno) && $ct_result->errno == 0 && $ct_result->allow == 0 ) {
-            \IPS\Output::i()->error($ct_result->comment, 'antispambycleantalk_blocked', 403, '');
-        }
+        $guestName = $values['guest_name'] ?? null;
+        Application::moderateContent(static::getMessage($object, $values), $member, is_string($guestName) ? $guestName : null);
     }
 
     /**

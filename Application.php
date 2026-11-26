@@ -17,6 +17,9 @@ use Cleantalk\Common\Antispam\Cleantalk;
 use Cleantalk\Common\Antispam\CleantalkRequest;
 use Cleantalk\Common\Firewall\Firewall;
 use Cleantalk\Custom\Helper\Helper;
+use IPS\Member;
+use IPS\Output;
+use IPS\Settings;
 
 define('APBCT_TBL_FIREWALL_DATA', 'cleantalk_sfw');      // Table with firewall data.
 define('APBCT_TBL_FIREWALL_LOG',  'cleantalk_sfw_logs'); // Table with firewall logs.
@@ -90,6 +93,31 @@ class Application extends \IPS\Application
     {
         $application = \IPS\Application::load('antispambycleantalk');
         return $application->version;
+    }
+
+    public static function canModerateContent(Member $member): bool
+    {
+        return $member->member_posts <= Settings::i()->ct_posts_to_check
+            && !$member->isAdmin();
+    }
+
+    public static function moderateContent(string $message, Member $member, ?string $guestName = null): void
+    {
+        $message = trim($message);
+        if ( $message === '' ) {
+            return;
+        }
+
+        $result = self::spamCheck([
+            'post_info' => ['comment_type' => 'comment'],
+            'sender_email' => $member->email,
+            'sender_nickname' => $guestName ?? $member->name,
+            'message' => $message,
+        ]);
+
+        if ( $result && isset($result->errno) && $result->errno == 0 && $result->allow == 0 ) {
+            Output::i()->error($result->comment, 'antispambycleantalk_blocked', 403, '');
+        }
     }
 
     public static function spamCheck($request_params, $reg_flag = false)
