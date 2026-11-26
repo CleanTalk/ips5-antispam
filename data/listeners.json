@@ -8,10 +8,5 @@
         "type": "ContentListenerType",
         "classname": "IPS\\antispambycleantalk\\listeners\\NewPost",
         "extends": "IPS\\Content\\Item"
-    },
-    "NewComment": {
-        "type": "ContentListenerType",
-        "classname": "IPS\\antispambycleantalk\\listeners\\NewComment",
-        "extends": "IPS\\Content\\Comment"
     }
 }

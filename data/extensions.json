@@ -9,6 +9,9 @@
         "Loader": {
             "Loader": "IPS\\antispambycleantalk\\extensions\\core\\Loader\\Loader"
         },
+        "UIComment": {
+            "Moderation": "IPS\\antispambycleantalk\\extensions\\core\\UIComment\\Moderation"
+        },
         "Uninstall": {
             "Antispambycleantalk": "IPS\\antispambycleantalk\\extensions\\core\\Uninstall\\Antispambycleantalk"
         }
